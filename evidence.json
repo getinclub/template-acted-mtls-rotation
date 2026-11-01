@@ -1,0 +1,33 @@
+{
+  "fleet timeline": [
+    "FROZEN STAGING CLOCK t=10; planned rotation, no evidence of key compromise.",
+    "t=9 orders-2 identity issuer changed root-2026-a -> root-2026-b. No trust-bundle deployment recorded.",
+    "Successful authenticated calls now: checkout-1 -> orders-1; checkout-2 -> orders-1. Other required pairs fail."
+  ],
+  "fleet inventory": [
+    "AUTHENTICATED INVENTORY: approved roots root-2026-a, root-2026-b. Do not import roots from untrusted presented certificates.",
+    "checkout-1: identity checkout-1 issuer A trust[A] verify=true validity[0,100].",
+    "checkout-2: identity checkout-2 issuer A trust[A] verify=true validity[0,100].",
+    "orders-1: identity orders-1 issuer A trust[A] verify=true validity[0,100].",
+    "orders-2: identity orders-2 issuer B trust[A] verify=true validity[0,100].",
+    "A=root-2026-a; B=root-2026-b. Inventory includes all four rehearsal peers; production inventory must include dormant clients and rollback identities."
+  ],
+  "fleet matrix": [
+    "MATRIX_EVIDENCE required clients checkout-1,checkout-2; servers orders-1,orders-2; all four directed pairs required.",
+    "Both client and server authenticate the other. Expected identity is its inventory name, not merely a trusted issuer.",
+    "checkout-1 -> orders-1: verified; checkout-1 -> orders-2: client rejects server issuer.",
+    "checkout-2 -> orders-1: verified; checkout-2 -> orders-2: client rejects server issuer.",
+    "Server-side checks presently accept both client identities. Health endpoint remains 200 on all peers."
+  ],
+  "fleet rollback-inventory": [
+    "Old orders-2 leaf: issuer A, identity orders-2, validity[0,100]; t=10; securely retained and approved for this planned rotation.",
+    "No revoked/compromised keys in this fixture. Rollback assumptions do not transfer to compromise response.",
+    "Fleet inventory is four peers; old-root leaf count3. No new client leaves have been deployed."
+  ],
+  "fleet verify-contract": [
+    "AUTHORED EXPECTATION ONLY; not CI results or real TLS telemetry.",
+    "Review actual unit tests and safe-plan/unsafe-plan replay for current PR. Safe plan must pass; rotate-first must reject at step0.",
+    "Completion requires 4/4 verified edges, verification disabled0, all inventoried leaves new, trust only approved target root.",
+    "A successful final matrix does not certify intermediate rollout safety. The template is a state model, not cryptographic TLS validation."
+  ]
+}
